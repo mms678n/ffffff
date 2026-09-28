@@ -1,0 +1,1563 @@
+{
+  "name": "01 - XAUUSD AI Trading Intelligence Core",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "5d4d3c59-f7ee-40d7-aaf4-14a5bae82829",
+      "name": "Every 5 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1800,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json:{minimum_score:70,minimum_directional_gap:12,minimum_structure_score:6,minimum_rr:1.5,risk_percent:0.5,max_stale_seconds:900,block_high_impact_news:true}}];"
+      },
+      "id": "24a22506-a8e5-43df-a3b4-1ddcdac4210f",
+      "name": "Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1590,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "5min"
+            },
+            {
+              "name": "outputsize",
+              "value": "200"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "ff114988-145c-4aad-ae9b-e94f5557efad",
+      "name": "XAU 5m",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1170,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "15min"
+            },
+            {
+              "name": "outputsize",
+              "value": "200"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "aef2d234-7110-4199-aa0c-7150f3e4499a",
+      "name": "XAU 15m",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -960,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "1h"
+            },
+            {
+              "name": "outputsize",
+              "value": "200"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "f33a76cb-739b-49b8-adc6-0de010d12cf3",
+      "name": "XAU 1h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -540,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "4h"
+            },
+            {
+              "name": "outputsize",
+              "value": "200"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "c1bc075e-3be8-436d-90bc-10200fbaa8ad",
+      "name": "XAU 4h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -330,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "1day"
+            },
+            {
+              "name": "outputsize",
+              "value": "200"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "f501ca11-caf2-4260-afeb-b8513e3b7b16",
+      "name": "XAU 1d",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -120,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "DXY"
+            },
+            {
+              "name": "interval",
+              "value": "1h"
+            },
+            {
+              "name": "outputsize",
+              "value": "100"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "d6e8ca72-75db-419b-b73a-96f02c1a4d8c",
+      "name": "DXY 1h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        90,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Api-Key",
+              "value": "={{ $vars.NEWSAPI_KEY }}"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "gold OR XAU OR USD OR Federal Reserve OR Powell OR CPI OR PCE OR NFP OR Treasury yields"
+            },
+            {
+              "name": "language",
+              "value": "en"
+            },
+            {
+              "name": "sortBy",
+              "value": "publishedAt"
+            },
+            {
+              "name": "pageSize",
+              "value": "40"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "244154c4-2c80-43ec-bcbe-434881d09421",
+      "name": "Macro News",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cfg=$('Config').first().json;function rows(n){try{const j=$(n).first().json;return Array.isArray(j.values)?j.values.map(v=>({t:v.datetime,o:+v.open,h:+v.high,l:+v.low,c:+v.close})).filter(x=>Number.isFinite(x.c)).sort((a,b)=>new Date(a.t)-new Date(b.t)):[]}catch(e){return[]}}function ema(v,n){if(v.length<n)return null;const k=2/(n+1);let e=v.slice(0,n).reduce((a,b)=>a+b,0)/n;for(let i=n;i<v.length;i++)e=v[i]*k+e*(1-k);return e}function rsi(v,n=14){if(v.length<n+1)return null;let g=0,l=0;for(let i=v.length-n;i<v.length;i++){const d=v[i]-v[i-1];if(d>=0)g+=d;else l-=d}if(l===0)return 100;const q=(g/n)/(l/n);return 100-100/(1+q)}function atr(c,n=14){if(c.length<n+1)return null;let t=[];for(let i=1;i<c.length;i++)t.push(Math.max(c[i].h-c[i].l,Math.abs(c[i].h-c[i-1].c),Math.abs(c[i].l-c[i-1].c)));return t.slice(-n).reduce((a,b)=>a+b,0)/n}function adx(c,n=14){if(c.length<n+2)return null;let tr=0,p=0,m=0;for(let i=c.length-n;i<c.length;i++){tr+=Math.max(c[i].h-c[i].l,Math.abs(c[i].h-c[i-1].c),Math.abs(c[i].l-c[i-1].c));const u=c[i].h-c[i-1].h,d=c[i-1].l-c[i].l;if(u>d&&u>0)p+=u;if(d>u&&d>0)m+=d}const P=100*p/tr,M=100*m/tr;return P+M?100*Math.abs(P-M)/(P+M):0}function trend(c){const v=c.map(x=>x.c),a=ema(v,20),b=ema(v,50),p=v.at(-1);if(!p||!a||!b)return'unknown';return p>a&&a>b?'bullish':p<a&&a<b?'bearish':'neutral'}function st(c){const z=c.slice(-80);let H=[],L=[];for(let i=2;i<z.length-2;i++){if(z[i].h>z[i-1].h&&z[i].h>z[i-2].h&&z[i].h>z[i+1].h&&z[i].h>z[i+2].h)H.push(z[i].h);if(z[i].l<z[i-1].l&&z[i].l<z[i-2].l&&z[i].l<z[i+1].l&&z[i].l<z[i+2].l)L.push(z[i].l)}const p=z.at(-1),ph=H.at(-1),pl=L.at(-1);return{hhhl:H.length>1&&L.length>1&&H.at(-1)>H.at(-2)&&L.at(-1)>L.at(-2),lhll:H.length>1&&L.length>1&&H.at(-1)<H.at(-2)&&L.at(-1)<L.at(-2),bosUp:!!ph&&p.c>ph,bosDown:!!pl&&p.c<pl,recentHigh:ph||null,recentLow:pl||null}}const c1=rows('XAU 1m'),c5=rows('XAU 5m'),c15=rows('XAU 15m'),c30=rows('XAU 30m'),c1h=rows('XAU 1h'),c4h=rows('XAU 4h'),c1d=rows('XAU 1d'),dxy=rows('DXY 1h'),us10=rows('US10Y 1h'),xag=rows('XAG 1h'),vix=rows('VIX 1h'),btc=rows('BTC 1h');const p=c5.at(-1),price=p?.c||null,at=atr(c5)||((price||1)*.001),enough=[c5,c15,c1h,c4h,c1d].every(x=>x.length>=60),age=p?Math.abs(Date.now()-new Date(p.t).getTime())/1000:1e9;let dq=!p?'DATA_UNAVAILABLE':!enough?'DATA_INCOMPLETE':age>cfg.max_stale_seconds?'DATA_STALE':'DATA_OK';const tr={'4h':trend(c4h),'1h':trend(c1h),'30m':trend(c30),'15m':trend(c15),'5m':trend(c5)};const W=(d,a,b,n)=>d==='bullish'?a:d==='bearish'?b:n;let tb=W(tr['4h'],10,0,5)+W(tr['1h'],7,0,3.5)+W(tr['15m'],3,0,1.5),ts=W(tr['4h'],0,10,5)+W(tr['1h'],0,7,3.5)+W(tr['15m'],0,3,1.5);const s=st(c15);let sb=Math.min(20,(s.hhhl?10:0)+(s.bosUp?6:0)),ss=Math.min(20,(s.lhll?10:0)+(s.bosDown?6:0));const z=c15.slice(-20),rl=Math.min(...z.slice(0,-1).map(x=>x.l)),rh=Math.max(...z.slice(0,-1).map(x=>x.h));let lb=Math.min(15,(p.l<rl&&p.c>rl?10:0)+(p.c<(rl+rh)/2?5:0)),ls=Math.min(15,(p.h>rh&&p.c<rh?10:0)+(p.c>(rl+rh)/2?5:0));const rv=rsi(c5.map(x=>x.c)),ax=adx(c5);let mb=0,ms=0;if(rv!==null){if(rv>=52&&rv<75)mb+=4;if(rv<=48&&rv>25)ms+=4}if(ax!==null&&ax>=20){if(tr['15m']==='bullish')mb+=3;if(tr['15m']==='bearish')ms+=3}const ch=c5.at(-1).c-c5.at(-4).c;if(ch>0)mb+=3;else if(ch<0)ms+=3;mb=Math.min(10,mb);ms=Math.min(10,ms);function rel(c){if(c.length<25)return null;const v=c.map(x=>x.c),e=ema(v,20);return v.at(-1)>e?1:v.at(-1)<e?-1:0}let cb=0,cs=0;const rd=rel(dxy),ru=rel(us10),rx=rel(xag);if(rd===-1)cb+=4;else if(rd===1)cs+=4;if(ru===-1)cb+=3;else if(ru===1)cs+=3;if(rx===1)cb+=3;else if(rx===-1)cs+=3;cb=Math.min(10,cb);cs=Math.min(10,cs);let news=[];try{news=$('Macro News').first().json.articles||[]}catch(e){}const nq=news.length?'DATA_OK':'NEWS_UNAVAILABLE';let events=[];try{events=$('Macro Events').all().map(x=>x.json)}catch(e){}const now=Date.now(),near=events.filter(e=>{const t=new Date(e.event_time).getTime();return Number.isFinite(t)&&Math.abs(t-now)<=30*60000&&/HIGH|3|RED/i.test(String(e.impact))});const h=new Date(p?.t||Date.now()).getUTCHours(),sess=h>=7&&h<12?'LONDON':h>=12&&h<16?'OVERLAP':h>=16&&h<21?'NEW_YORK':'ASIA',sessScore=sess==='OVERLAP'?5:(sess==='LONDON'||sess==='NEW_YORK'?4:2);const v=c5.map(x=>x.c),tech={ema20:ema(v,20),ema50:ema(v,50),ema100:ema(v,100),ema200:ema(v,200),rsi:rv,atr:at,adx:ax,volatility:at/(price||1)};return[{json:{strategy_version:'XAU-CONFLUENCE-2.1.0',config:cfg,price,latest_timestamp:p?.t||'',data_quality:dq,news_quality:nq,raw_news:news.slice(0,25),macro_events:events.slice(-50),macro_high_impact_nearby:near.length>0,trend:tr,trendBull:tb,trendBear:ts,structure:s,structBull:sb,structBear:ss,liqBull:lb,liqBear:ls,technical:tech,momentum:{rsi:rv,adx:ax,atr:at},momBull:mb,momBear:ms,correlation:{bull:cb,bear:cs,dxy:rd,us10y:ru,xag:rx,vix:rel(vix),btc:rel(btc)},session:sess,sessionScore:sessScore}}];"
+      },
+      "id": "d2a3da4c-bdd8-4b05-885b-3053a0d04987",
+      "name": "Feature Engine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$vars.OPENROUTER_API_KEY}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={{ JSON.stringify({model:$vars.OPENROUTER_MODEL,temperature:0.05,messages:[{role:'system',content:'Analyze supplied XAUUSD macro news and economic-calendar events. Return ONLY valid JSON: impact_score -20..20 where positive supports gold, gold_bias BULLISH|BEARISH|NEUTRAL, impact LOW|MEDIUM|HIGH|UNKNOWN, high_impact boolean, summary string. Use actual/forecast/previous only if present. Never invent facts.'},{role:'user',content:JSON.stringify({news:$json.raw_news,events:$json.macro_events,technical:$json.technical})}]}) }}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "id": "4c4a8b29-216e-48f8-b3c2-3d51fc2f551e",
+      "name": "AI News Analyst",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1770,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const m=$('Feature Engine').first().json;let ai={impact_score:0,gold_bias:'NEUTRAL',impact:'UNKNOWN',high_impact:false,summary:'AI unavailable'};let aiOk=false;try{let r=$json.choices?.[0]?.message?.content||'';ai={...ai,...JSON.parse(String(r).replace(/^```json\\s*/i,'').replace(/```$/,'').trim())};aiOk=true}catch(e){}\nconst cap=(v,a,b)=>Math.max(a,Math.min(b,v));let nb=0,ns=0,x=cap(Number(ai.impact_score)||0,-20,20);if(x>0)nb=x;else ns=Math.abs(x);if(String(ai.gold_bias).toUpperCase()==='BULLISH')nb=Math.max(nb,10);if(String(ai.gold_bias).toUpperCase()==='BEARISH')ns=Math.max(ns,10);\nconst B={trend:cap(m.trendBull,0,20),structure:cap(m.structBull,0,20),liquidity:cap(m.liqBull,0,15),momentum:cap(m.momBull,0,10),news:cap(nb,0,20),correlation:cap(m.correlation.bull,0,10),session:cap(m.sessionScore,0,5)},S={trend:cap(m.trendBear,0,20),structure:cap(m.structBear,0,20),liquidity:cap(m.liqBear,0,15),momentum:cap(m.momBear,0,10),news:cap(ns,0,20),correlation:cap(m.correlation.bear,0,10),session:cap(m.sessionScore,0,5)};const sum=o=>Object.values(o).reduce((a,b)=>a+b,0),bs=sum(B),ss=sum(S);let d=bs>ss?'BUY':'SELL',score=Math.max(bs,ss),gap=Math.abs(bs-ss),chosen=d==='BUY'?B:S;\nconst p=m.price,at=m.momentum.atr||p*.001;let sl=d==='BUY'?Math.min(p-1.2*at,(m.structure.recentLow||p-1.5*at)-.25*at):Math.max(p+1.2*at,(m.structure.recentHigh||p+1.5*at)+.25*at),risk=Math.abs(p-sl),tp1=d==='BUY'?p+1.5*risk:p-1.5*risk,tp2=d==='BUY'?p+2*risk:p-2*risk,tp3=d==='BUY'?p+3*risk:p-3*risk;\nconst gates={score:score>=m.config.minimum_score,confluence:gap>=m.config.minimum_directional_gap,structure:chosen.structure>=m.config.minimum_structure_score,rr:1.5>=m.config.minimum_rr,market:m.data_quality==='DATA_OK',news:m.news_quality==='DATA_OK',ai:aiOk,highImpact:!(ai.high_impact&&m.config.block_high_impact_news),macroBlackout:!m.macro_high_impact_nearby};const failed=Object.entries(gates).filter(x=>!x[1]).map(x=>x[0]);if(failed.length)d='WAIT';const ts=new Date().toISOString();function h(s){let x=2166136261;for(const c of s){x^=c.charCodeAt(0);x=Math.imul(x,16777619)}return(x>>>0).toString(16)}const sh=h([d,Math.round((p||0)/(at||1)),m.structure.bosUp,m.structure.bosDown,m.session,ai.gold_bias].join('|')),id=`XAUUSD-${ts.replace(/\\D/g,'').slice(0,14)}-${d}-${sh}`;const conf=cap(Math.round(score*.55+gap*.8+(aiOk?8:0)-(m.data_quality==='DATA_OK'?0:20)),0,100);\nreturn[{json:{signal_id:id,setup_hash:sh,strategy_version:m.strategy_version,timestamp:ts,symbol:'XAUUSD',direction:d,decision:d,score:+score.toFixed(2),confidence:conf,entry_type:'market_context',entry_min:d==='WAIT'?0:+(p-.15*at).toFixed(4),entry_max:d==='WAIT'?0:+(p+.15*at).toFixed(4),stop_loss:d==='WAIT'?0:+sl.toFixed(4),tp1:d==='WAIT'?0:+tp1.toFixed(4),tp2:d==='WAIT'?0:+tp2.toFixed(4),tp3:d==='WAIT'?0:+tp3.toFixed(4),rr:d==='WAIT'?0:1.5,risk_percent:m.config.risk_percent,trend_score:+chosen.trend.toFixed(2),structure_score:+chosen.structure.toFixed(2),liquidity_score:+chosen.liquidity.toFixed(2),momentum_score:+chosen.momentum.toFixed(2),news_score:+chosen.news.toFixed(2),correlation_score:+chosen.correlation.toFixed(2),session_score:+chosen.session.toFixed(2),session:m.session,news_impact:String(ai.impact||'UNKNOWN'),news_bias:String(ai.gold_bias||'NEUTRAL'),news_summary:String(ai.summary||''),reason:d==='WAIT'?`WAIT: ${failed.join(', ')}`:`${d} confluence ${score.toFixed(1)}/100`,invalidation:d==='BUY'?`15m close below ${sl.toFixed(2)}`:d==='SELL'?`15m close above ${sl.toFixed(2)}`:'',data_quality:m.data_quality,status:d==='WAIT'?'WAIT':'ACTIVE',result:'',exit_price:0,exit_timestamp:'',exit_reason:'',mfe:0,mae:0,duration_seconds:0,r_multiple:0,points_result:0,last_checked_at:'',payload_json:JSON.stringify({gates,B,S,ai})}}];"
+      },
+      "id": "1730531d-be77-4530-abef-1b625d514ad8",
+      "name": "Decision Engine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "xauusd_signals_v2"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "1630c646-0407-49e8-8952-55659e68f113",
+      "name": "Previous Signals",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2190,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$('Decision Engine').first().json,rows=$input.all().map(x=>x.json),now=Date.now();if(s.decision==='WAIT')return[{json:{...s,deliver:false,duplicate:false}}];const dup=rows.some(r=>r.setup_hash===s.setup_hash&&['ACTIVE','TP1_HIT','TP2_HIT'].includes(r.status)&&now-new Date(r.timestamp).getTime()<20*60000);return[{json:{...s,deliver:!dup,duplicate:dup,reason:dup?'Duplicate setup blocked':s.reason}}];"
+      },
+      "id": "190f0dec-dae1-4576-952e-2eee561250f6",
+      "name": "Duplicate Guard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e9d41e8a-f3e8-443b-9027-a00c48b84b5b",
+              "leftValue": "={{ $json.deliver }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ddda1c50-96cf-4950-9f79-eb82a33df356",
+      "name": "Deliver?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2610,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "xauusd_signals_v2"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "signal_id",
+              "keyValue": "={{ $json.signal_id }}",
+              "condition": "eq"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "signal_id": "={{ $json.signal_id }}",
+            "setup_hash": "={{ $json.setup_hash }}",
+            "strategy_version": "={{ $json.strategy_version }}",
+            "timestamp": "={{ $json.timestamp }}",
+            "symbol": "={{ $json.symbol }}",
+            "direction": "={{ $json.direction }}",
+            "decision": "={{ $json.decision }}",
+            "score": "={{ $json.score }}",
+            "confidence": "={{ $json.confidence }}",
+            "entry_type": "={{ $json.entry_type }}",
+            "entry_min": "={{ $json.entry_min }}",
+            "entry_max": "={{ $json.entry_max }}",
+            "stop_loss": "={{ $json.stop_loss }}",
+            "tp1": "={{ $json.tp1 }}",
+            "tp2": "={{ $json.tp2 }}",
+            "tp3": "={{ $json.tp3 }}",
+            "rr": "={{ $json.rr }}",
+            "risk_percent": "={{ $json.risk_percent }}",
+            "trend_score": "={{ $json.trend_score }}",
+            "structure_score": "={{ $json.structure_score }}",
+            "liquidity_score": "={{ $json.liquidity_score }}",
+            "momentum_score": "={{ $json.momentum_score }}",
+            "news_score": "={{ $json.news_score }}",
+            "correlation_score": "={{ $json.correlation_score }}",
+            "session_score": "={{ $json.session_score }}",
+            "session": "={{ $json.session }}",
+            "news_impact": "={{ $json.news_impact }}",
+            "news_bias": "={{ $json.news_bias }}",
+            "news_summary": "={{ $json.news_summary }}",
+            "reason": "={{ $json.reason }}",
+            "invalidation": "={{ $json.invalidation }}",
+            "data_quality": "={{ $json.data_quality }}",
+            "status": "={{ $json.status }}",
+            "result": "={{ $json.result }}",
+            "exit_price": "={{ $json.exit_price }}",
+            "exit_timestamp": "={{ $json.exit_timestamp }}",
+            "exit_reason": "={{ $json.exit_reason }}",
+            "mfe": "={{ $json.mfe }}",
+            "mae": "={{ $json.mae }}",
+            "duration_seconds": "={{ $json.duration_seconds }}",
+            "r_multiple": "={{ $json.r_multiple }}",
+            "points_result": "={{ $json.points_result }}",
+            "last_checked_at": "={{ $json.last_checked_at }}",
+            "payload_json": "={{ $json.payload_json }}"
+          },
+          "matchingColumns": [
+            "signal_id"
+          ],
+          "schema": [
+            {
+              "id": "signal_id",
+              "displayName": "signal_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "setup_hash",
+              "displayName": "setup_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "strategy_version",
+              "displayName": "strategy_version",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "symbol",
+              "displayName": "symbol",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "direction",
+              "displayName": "direction",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decision",
+              "displayName": "decision",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "entry_type",
+              "displayName": "entry_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "entry_min",
+              "displayName": "entry_min",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "entry_max",
+              "displayName": "entry_max",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "stop_loss",
+              "displayName": "stop_loss",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "tp1",
+              "displayName": "tp1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "tp2",
+              "displayName": "tp2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "tp3",
+              "displayName": "tp3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "rr",
+              "displayName": "rr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "risk_percent",
+              "displayName": "risk_percent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "trend_score",
+              "displayName": "trend_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "structure_score",
+              "displayName": "structure_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "liquidity_score",
+              "displayName": "liquidity_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "momentum_score",
+              "displayName": "momentum_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "news_score",
+              "displayName": "news_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "correlation_score",
+              "displayName": "correlation_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "session_score",
+              "displayName": "session_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "session",
+              "displayName": "session",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "news_impact",
+              "displayName": "news_impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "news_bias",
+              "displayName": "news_bias",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "news_summary",
+              "displayName": "news_summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "invalidation",
+              "displayName": "invalidation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_quality",
+              "displayName": "data_quality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "result",
+              "displayName": "result",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "exit_price",
+              "displayName": "exit_price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "exit_timestamp",
+              "displayName": "exit_timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "exit_reason",
+              "displayName": "exit_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "mfe",
+              "displayName": "mfe",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "mae",
+              "displayName": "mae",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "duration_seconds",
+              "displayName": "duration_seconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "r_multiple",
+              "displayName": "r_multiple",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "points_result",
+              "displayName": "points_result",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "last_checked_at",
+              "displayName": "last_checked_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "payload_json",
+              "displayName": "payload_json",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": true,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ee0e82ff-10d2-42e8-a508-df816ed03dfc",
+      "name": "Store Signal",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2820,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{$vars.TELEGRAM_BOT_TOKEN}}/sendMessage",
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={{JSON.stringify({chat_id:$vars.TELEGRAM_CHAT_ID,parse_mode:'HTML',text:`🟡 <b>XAUUSD SIGNAL</b>\\n\\n<b>${$json.direction}</b> | Score ${$json.score}/100 | Confidence ${$json.confidence}%\\nEntry ${$json.entry_min}–${$json.entry_max}\\nSL ${$json.stop_loss}\\nTP1 ${$json.tp1}\\nTP2 ${$json.tp2}\\nTP3 ${$json.tp3}\\nRR ${$json.rr}\\n\\nTrend ${$json.trend_score}/20 | Structure ${$json.structure_score}/20 | Liquidity ${$json.liquidity_score}/15\\nMomentum ${$json.momentum_score}/10 | News ${$json.news_score}/20 | Correlation ${$json.correlation_score}/10 | Session ${$json.session_score}/5\\n\\n${$json.reason}\\nInvalidation: ${$json.invalidation}\\n\\n⚠️ Automated analysis; no result is guaranteed.`})}}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "19363a83-03af-4a82-bd80-53e3817f9335",
+      "name": "Telegram Signal",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3030,
+        -100
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "id": "9d7d2e57-17c5-4259-9e04-7564015baa5a",
+      "name": "No Signal",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2820,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "1min"
+            },
+            {
+              "name": "outputsize",
+              "value": "120"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "c7b3c687-1150-405b-9000-605c48685281",
+      "name": "XAU 1m",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1380,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAU/USD"
+            },
+            {
+              "name": "interval",
+              "value": "30min"
+            },
+            {
+              "name": "outputsize",
+              "value": "120"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "5074c981-129e-4137-aa69-a03e14192556",
+      "name": "XAU 30m",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -750,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "TNX"
+            },
+            {
+              "name": "interval",
+              "value": "1h"
+            },
+            {
+              "name": "outputsize",
+              "value": "120"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "2a6aacc6-3a42-45c0-92fb-6bdb1043a0a2",
+      "name": "US10Y 1h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "XAG/USD"
+            },
+            {
+              "name": "interval",
+              "value": "1h"
+            },
+            {
+              "name": "outputsize",
+              "value": "120"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "c20725ef-4da1-4ceb-b21a-6260f4240829",
+      "name": "XAG 1h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        510,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "VIX"
+            },
+            {
+              "name": "interval",
+              "value": "1h"
+            },
+            {
+              "name": "outputsize",
+              "value": "120"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "20facdb5-7a2d-44e0-81ed-3a14d49e89af",
+      "name": "VIX 1h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://api.twelvedata.com/time_series",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "BTC/USD"
+            },
+            {
+              "name": "interval",
+              "value": "1h"
+            },
+            {
+              "name": "outputsize",
+              "value": "120"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $vars.TWELVEDATA_API_KEY }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "8ebf25b5-0363-46a3-9f5c-66746978fd2b",
+      "name": "BTC 1h",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        930,
+        0
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "name",
+          "value": "xauusd_macro_events"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "b096f8b8-baaf-4c6b-b2c5-2ddb4091e1b8",
+      "name": "Macro Events",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1350,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Every 5 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "XAU 1m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 1m": {
+      "main": [
+        [
+          {
+            "node": "XAU 5m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 5m": {
+      "main": [
+        [
+          {
+            "node": "XAU 15m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 15m": {
+      "main": [
+        [
+          {
+            "node": "XAU 30m",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 30m": {
+      "main": [
+        [
+          {
+            "node": "XAU 1h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 1h": {
+      "main": [
+        [
+          {
+            "node": "XAU 4h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 4h": {
+      "main": [
+        [
+          {
+            "node": "XAU 1d",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAU 1d": {
+      "main": [
+        [
+          {
+            "node": "DXY 1h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DXY 1h": {
+      "main": [
+        [
+          {
+            "node": "US10Y 1h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "US10Y 1h": {
+      "main": [
+        [
+          {
+            "node": "XAG 1h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XAG 1h": {
+      "main": [
+        [
+          {
+            "node": "VIX 1h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VIX 1h": {
+      "main": [
+        [
+          {
+            "node": "BTC 1h",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BTC 1h": {
+      "main": [
+        [
+          {
+            "node": "Macro News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Macro News": {
+      "main": [
+        [
+          {
+            "node": "Macro Events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Macro Events": {
+      "main": [
+        [
+          {
+            "node": "Feature Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Feature Engine": {
+      "main": [
+        [
+          {
+            "node": "AI News Analyst",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI News Analyst": {
+      "main": [
+        [
+          {
+            "node": "Decision Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Engine": {
+      "main": [
+        [
+          {
+            "node": "Previous Signals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Previous Signals": {
+      "main": [
+        [
+          {
+            "node": "Duplicate Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplicate Guard": {
+      "main": [
+        [
+          {
+            "node": "Deliver?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deliver?": {
+      "main": [
+        [
+          {
+            "node": "Store Signal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Signal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Signal": {
+      "main": [
+        [
+          {
+            "node": "Telegram Signal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2a612fb6-e125-4e97-80d9-a743f2a0b478",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

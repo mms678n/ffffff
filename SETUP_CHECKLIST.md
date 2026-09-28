@@ -1,0 +1,11 @@
+# Setup Checklist
+- [ ] Import workflows
+- [ ] Run Bootstrap
+- [ ] Add n8n Project Variables / credentials
+- [ ] Assign Error Handler to production workflows
+- [ ] Run Test Harness
+- [ ] Run Data Quality Monitor manually
+- [ ] Run Core manually
+- [ ] Build historical news table
+- [ ] Run Backtest
+- [ ] Activate schedules
